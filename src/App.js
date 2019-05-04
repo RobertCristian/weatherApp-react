@@ -31,13 +31,11 @@ class App extends React.Component {
             showPrevious: false
         };
 
-         this.weatherFormRef = React.createRef();
+        this.weatherFormRef = React.createRef();
     }
-
-
+    
     getWeather = async (e) => {
         e.preventDefault();
-        console.log('caca');
         const city = e.target.elements.city.value;
         const country = e.target.elements.country.value;
 
@@ -83,24 +81,22 @@ class App extends React.Component {
         })
     };
 
-    handleSwitchWeatherUniBtnClick = (e) => {
+    handleSwitchWeatherUniBtnClick = async e => {
+        e.preventDefault();
+
         let weatherUnit = this.state.weatherUnit;
 
         if (weatherUnit === 'metric') {
             weatherUnit = 'imperial'
-        }
-
-        if (weatherUnit === 'imperial') {
+        } else if (weatherUnit === 'imperial') {
             weatherUnit = 'metric'
         }
 
-        this.setState({
+        await this.setState({
             weatherUnit: weatherUnit
         });
 
-        console.log(this.weatherFormRef.current);
-        // this.weatherFormRef.current.form.current.dispatchEvent(new Event('submit'));
-        this.weatherFormRef.current.form.current.submit();
+        this.weatherFormRef.current.form.current.click();
     };
 
     render() {

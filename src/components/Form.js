@@ -9,10 +9,10 @@ class Form extends React.Component {
 
     render() {
         return (
-            <form className="flex" onSubmit={this.props.getWeather} ref={this.form}>
+            <form className="flex" onSubmit={this.props.getWeather} >
                 <input type="text" name="city" placeholder="City"/>
                 <input type="text" name="country" placeholder="Country"/>
-                <button>Search</button>
+                <button type="submit" ref={this.form}>Search</button>
                 <button type="reset" onClick={this.props.showPrevious} disabled={this.props.searchCounter < 2}>Previous
                     Location
                 </button>
