@@ -33,7 +33,7 @@ class App extends React.Component {
 
         this.weatherFormRef = React.createRef();
     }
-    
+
     getWeather = async (e) => {
         e.preventDefault();
         const city = e.target.elements.city.value;

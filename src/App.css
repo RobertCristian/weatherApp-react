@@ -126,6 +126,7 @@ button:disabled {
 .weather__value {
     color: #fff;
     font-weight: 200;
+    margin-left: 5px;
 }
 
 .weather__error {

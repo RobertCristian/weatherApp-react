@@ -28,9 +28,10 @@ class Weather extends React.Component {
                 {
                     this.props.temperature && <p className="weather__key"> Temperature:
                         <span
-                            className="weather__value mr-2"> {this.props.temperature} {this.getWeatherUnitEntity()}
+                            className="weather__value mr-2">{this.props.temperature} {this.getWeatherUnitEntity()}
                     </span>
-                        <button type="button" className="weather__key-button" onClick={this.props.switchWeatherUnit}>Switch
+                        <button type="button" className="weather__key-button"
+                                onClick={this.props.switchWeatherUnit}>Switch
                             to {this.getWeatherUnitEntity('reverse')}</button>
                     </p>
                 }
@@ -43,7 +44,7 @@ class Weather extends React.Component {
                 }
                 {
                     this.props.description && <p className="weather__key"> Conditions:
-                        <span className="weather__value text-capitalize">
+                        <span className="weather__value text-capitalize d-inline-block">
                         {this.props.description}
                     </span>
                     </p>
