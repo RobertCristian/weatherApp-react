@@ -2,6 +2,7 @@ import React from "react";
 import Titles from "./components/Titles";
 import Form from "./components/Form";
 import Weather from "./components/Weather";
+import Forecast from "./components/Forecast";
 
 const API_KEY = process.env.REACT_APP_OPENWEATHER_API_KEY;
 
@@ -10,7 +11,7 @@ class App extends React.Component {
         super(props);
 
         this.state = {
-            weatherUnit: 'imperial',
+            weatherUnit: 'metric',
             current: {
                 temperature: undefined,
                 city: undefined,
@@ -27,6 +28,7 @@ class App extends React.Component {
                 description: undefined,
                 error: undefined
             },
+            forecast: [],
             searchCounter: 0,
             showPrevious: false
         };
@@ -44,7 +46,7 @@ class App extends React.Component {
         const data = await api_call.json();
 
         if (city && country) {
-            if (this.state.searchCounter > 0 && this.state.current.city != city) {
+            if (this.state.searchCounter > 0 && this.state.current.city !== city) {
                 this.setState({
                     previous: this.state.current
                 })
@@ -58,7 +60,7 @@ class App extends React.Component {
                     description: data.weather[0].description,
                     error: ""
                 },
-                searchCounter: this.state.searchCounter + 1,
+                searchCounter: this.state.current.city !== city ? this.state.searchCounter + 1 : this.state.searchCounter,
                 showPrevious: false
             })
         } else {
@@ -99,6 +101,31 @@ class App extends React.Component {
         this.weatherFormRef.current.form.current.click();
     };
 
+    toggleForecast = async () => {
+        let forecast = [];
+
+        if (this.state.forecast.length === 0) {
+            const city = this.state.current.city;
+            const country = this.state.current.country;
+
+            const api_call = await fetch(`http://api.openweathermap.org/data/2.5/forecast?q=${city},${country}&appid=${API_KEY}&units=${this.state.weatherUnit}&cnt=3`);
+
+            const data = await api_call.json();
+
+            data.list.map(function (nextForecast) {
+                return forecast.push({
+                    dt: new Date(nextForecast.dt * 1000).getHours() + ':00',
+                    temperature: nextForecast.main.temp,
+                    description: nextForecast.weather[0].description
+                })
+            });
+        }
+
+        await this.setState({
+            forecast: forecast
+        })
+    };
+
     render() {
         const showPrevious = this.state.showPrevious;
 
@@ -129,6 +156,10 @@ class App extends React.Component {
                                         error={this.state.current.error}
                                         switchWeatherUnit={this.handleSwitchWeatherUniBtnClick}
                                     />
+                                    <Forecast
+                                        forecast={this.state.forecast}
+                                        currentCity={this.state.current.city}
+                                        toggleForecast={this.toggleForecast}/>
                                 </div>
                             </div>
                         </div>
