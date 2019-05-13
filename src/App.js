@@ -44,8 +44,8 @@ class App extends React.Component {
         const api_call = await fetch(`http://api.openweathermap.org/data/2.5/weather?q=${city},${country}&appid=${API_KEY}&units=${this.state.weatherUnit}`);
 
         const data = await api_call.json();
-
-        if (city && country) {
+        
+        if (data.cod === 200 && (city && country)) {
             if (this.state.searchCounter > 0 && this.state.current.city !== city) {
                 this.setState({
                     previous: this.state.current
@@ -71,7 +71,7 @@ class App extends React.Component {
                     country: undefined,
                     humidity: undefined,
                     description: undefined,
-                    error: "Please Enter the value"
+                    error: data.message ? data.message : "Please Enter the value"
                 }
             })
         }
